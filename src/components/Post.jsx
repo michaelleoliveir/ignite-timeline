@@ -1,11 +1,21 @@
-import React from 'react'
+import { format, formatDistanceToNow } from "date-fns" 
+import prBR from "date-fns/locale/pt-BR"
 
 import styles from "./Post.module.css"
 
 import Comment from './Comment'
 import Avatar from "./Avatar"
 
-const Post = () => {
+const Post = (props) => {
+    const publishedDateFormatted = format(props.publishedAt, "dd 'de' LLLL 'às' HH:mm'h'", {
+        locale: prBR
+    })
+
+    const publishedDateRelativeToNow = formatDistanceToNow(props.publishedAt, {
+        locale: prBR,
+        addSuffix: true
+    })
+
     return (
         <article className={styles.post}>
             <header>
@@ -13,31 +23,29 @@ const Post = () => {
                 {/* primeira parte do header */}
                 <div className={styles.author}>
                     <Avatar 
-                        src="https://64.media.tumblr.com/eff450b860c3f2c2fb6006cd754ae49c/c3d375d01875d8c6-8a/s1280x1920/b0ae516254203f1d4015061377b5044d0fd8a9d7.jpg"/>
+                        src={props.author.avatarUrl}/>
 
                     <div className={styles.authorInfo}>
-                        <strong>Michaelle Oliveira</strong>
-                        <span>Front-end Developer</span>
+                        <strong>{props.author.name}</strong>
+                        <span>{props.author.role}</span>
                     </div>
                 </div>
 
                 {/* segunda parte do header */}
-                <time title='01 de março, às 21h19' dateTime="2024-01-03 21:19:34">Publicado há 1h</time>
+                <time title={publishedDateFormatted} dateTime={(props.publishedAt).toISOString()}>
+                    {publishedDateRelativeToNow}
+                </time>
             </header>
 
             {/* conteúdo do post */}
             <div className={styles.content}>
-                <p>Fala galeraa 👋</p>
-
-                <p>Acabei de subir mais um projeto no meu portifa. É um projeto que fiz no NLW Return, evento da Rocketseat. O nome do projeto é DoctorCare 🚀</p>
-
-                <p>👉{" "} <a href='#'>jane.design/doctorcare</a></p>
-
-                <p>
-                    <a href="">#novoprojeto</a>{" "}
-                    <a href="">#nlw</a>{" "}
-                    <a href="">#rocketseat</a>
-                </p>
+                {(props.content).map(line => {
+                    if(line.type === "paragraph") {
+                        return <p>{line.content}</p>
+                    } else if(line.type === "link") {
+                        return <p><a href="#">{line.content}</a></p>
+                    }
+                })}
             </div>
 
             {/* escrever comentário */}

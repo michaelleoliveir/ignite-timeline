@@ -2,6 +2,8 @@ import React from 'react'
 
 import styles from "./Post.module.css"
 
+import Comment from './Comment'
+
 const Post = () => {
     return (
         <article className={styles.post}>
@@ -24,6 +26,7 @@ const Post = () => {
                 <time title='01 de março, às 21h19' dateTime="2024-01-03 21:19:34">Publicado há 1h</time>
             </header>
 
+            {/* conteúdo do post */}
             <div className={styles.content}>
                 <p>Fala galeraa 👋</p>
 
@@ -38,6 +41,7 @@ const Post = () => {
                 </p>
             </div>
 
+            {/* escrever comentário */}
             <form className={styles.commentForm}>
                 <strong>Deixe seu feedback</strong>
 
@@ -47,6 +51,12 @@ const Post = () => {
                     <button type='submit'>Publicar</button>
                 </footer>
             </form>
+
+            <div className={styles.commentList}>
+                <Comment />
+                <Comment />
+                <Comment />
+            </div>
         </article>
     )
 }

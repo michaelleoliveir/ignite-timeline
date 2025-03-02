@@ -34,6 +34,10 @@ const Post = (props) => {
         setNewCommentText(e.target.value)
     }
 
+    function deleteComment(comment) {
+        console.log(`Deletar comentário ${comment}`)
+    }
+
     return (
         <article className={styles.post}>
             <header>
@@ -84,7 +88,7 @@ const Post = (props) => {
 
             <div className={styles.commentList}>
                 {comments.map(comment => {
-                    return <Comment key={comment} content={comment} />
+                    return <Comment key={comment} content={comment} onDeleteComment={deleteComment} />
                 })}
             </div>
         </article>

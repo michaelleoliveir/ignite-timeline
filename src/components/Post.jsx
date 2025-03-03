@@ -34,8 +34,14 @@ const Post = (props) => {
         setNewCommentText(e.target.value)
     }
 
-    function deleteComment(comment) {
-        console.log(`Deletar comentário ${comment}`)
+    function deleteComment(commentToDelete) {
+        // atualizando a lista de comentários sem o comentário que foi deletado
+
+        const commentsWithoutDeletedOne = comments.filter(comment => {
+            return comment !== commentToDelete
+        })
+
+        setComments(commentsWithoutDeletedOne)
     }
 
     return (

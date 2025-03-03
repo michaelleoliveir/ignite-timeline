@@ -23,6 +23,7 @@ const Post = (props) => {
         addSuffix: true
     })
 
+    // adiciona novo comentário a array de comentários
     function handleCreateNewComment(e) {
         e.preventDefault();
         setComments([...comments, newCommentText])
@@ -30,8 +31,14 @@ const Post = (props) => {
         setNewCommentText("")
     }
 
+    // atualiza o texto do novo comentário quando o usuário muda o input
     function handleNewCommentChange(e) {
+        e.target.setCustomValidity("")
         setNewCommentText(e.target.value)
+    }
+
+    function handleNewCommentInvalid(e) {
+        e.target.setCustomValidity("Esse campo é obrigatório")
     }
 
     function deleteComment(commentToDelete) {
@@ -43,6 +50,8 @@ const Post = (props) => {
 
         setComments(commentsWithoutDeletedOne)
     }
+
+    const isNewCommentEmpty = newCommentText.length === 0;
 
     return (
         <article className={styles.post}>
@@ -84,11 +93,13 @@ const Post = (props) => {
                     name="comment" 
                     placeholder='Deixe seu comentário'
                     value={newCommentText}
-                    onChange={handleNewCommentChange}
+                    onChange={(e) => handleNewCommentChange(e)}
+                    required
+                    onInvalid={(e) => handleNewCommentInvalid(e)}
                 ></textarea>
 
                 <footer>
-                    <button type='submit'>Publicar</button>
+                    <button disabled={isNewCommentEmpty} type='submit'>Publicar</button>
                 </footer>
             </form>
 
